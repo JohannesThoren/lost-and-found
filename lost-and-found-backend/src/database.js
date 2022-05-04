@@ -15,7 +15,7 @@ async function check_if_user_with_name_and_email_exists(username, email) {
 }
 
 async function check_if_user_with_uuid_exists(uuid) {
-    let text = "SELECT * FROM users WHERE EXISTS (SELECT uuid FROM users WHERE uuid = $1)"
+    let text = "SELECT * FROM users WHERE uuid = $1"
     let value = [uuid]
     const res = await client.query(text, value)
     return (res.rows)
@@ -23,7 +23,6 @@ async function check_if_user_with_uuid_exists(uuid) {
 
 // returns true of it successfully created a new user, and false if it failed
 async function create_new_user(username, password, email) {
-
     if (await check_if_user_with_name_and_email_exists(username, email)) {
         let contact_information = {
             "option1": {"type": "", "value": ""},
@@ -34,9 +33,9 @@ async function create_new_user(username, password, email) {
         let text = "INSERT INTO users(username, password, token, email, contact_information, uuid) VALUES ($1, $2, $3, $4, $5, $6)"
         let values = [username, base64.encode(password), uuid.v1(), email, contact_information, uuid.v4()]
         const res = await client.query(text, values)
-        return false
-    } else {
         return true
+    } else {
+        return false
     }
 }
 
@@ -49,3 +48,5 @@ async function get_user_info_by_item_code(item_code) {
     client.query(``)
 
 }
+
+exports.create_new_user = create_new_user;
