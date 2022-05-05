@@ -1,2 +1,3 @@
 */node_modules
-./lost-and-found-backend/.env
+lost-and-found-backend/.env
+
