@@ -88,13 +88,19 @@ exports.get_user_data_by_token = async function get_user_data_by_token(token) {
 async function get_user_uuid_buy_item_uuid(uuid) {
     let get_user_id_text = "SELECT * FROM item_user_connections WHERE item_uuid = $1"
     let connections_response = await client.query(get_user_id_text, [uuid])
-    return await connections_response.rows[0].user_uuid
+    if(connections_response.rows.length > 0) {
+        return await connections_response.rows[0].user_uuid
+    }
+    else return false
 }
 
 async function get_user_contact_info_by_user_uuid(uuid) {
     let text = "SELECT * FROM contact_information WHERE uuid = $1"
     let response = await client.query(text, [uuid])
-    return await response.rows
+    if(response.rows.length > 0) {
+        return response.rows
+    }
+    else return false
 }
 
 exports.get_user_contact_info_by_item_uuid = async function get_user_contact_info_by_item_uuid(uuid) {
@@ -124,7 +130,11 @@ async function connect_code_and_item(item_uuid) {
 exports.get_item_uuid_by_code = async function get_item_uuid_by_code(code) {
     let text = "SELECT * FROM item_code_connections WHERE code = $1"
     let response = await client.query(text, [code])
-    return response.rows[0].item_uuid
+
+    if(response.rows.length > 0) {
+        return response.rows[0].item_uuid
+    }
+    else return false
 }
 
 exports.create_new_item = async function create_new_item(item_name, item_description, user) {
