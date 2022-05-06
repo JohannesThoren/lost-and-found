@@ -6,7 +6,7 @@ import CodeInput from "./CodeInput";
 
 interface IProps {
     owner: string,
-    ContactInformation: [{type: string, value: string}],
+    ContactInformation: [{type: string, value: string, id: number}],
 }
 
 interface IStates {
