@@ -1,6 +1,8 @@
 @import url('./Nav.css');
-
+@import url('./CodeInput.css');
+@import url('./Contact.css');
 body {
+    font-family: sans-serif;
     margin: 0px;
 }
 

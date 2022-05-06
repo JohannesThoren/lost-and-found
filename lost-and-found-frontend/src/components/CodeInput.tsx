@@ -12,7 +12,6 @@ interface IStates {
     owner: string,
     ContactInformation: [{ type: string, value: string }],
     code: string,
-    hasContactInfo: boolean
 }
 
 
@@ -26,14 +25,12 @@ export default class CodeInput extends React.Component<IProps, IStates> {
                 owner: "",
                 ContactInformation: [],
                 code: "",
-                hasContactInfo: false
             }
         } else {
             this.state = {
                 owner: "",
                 ContactInformation: [],
                 code: this.props.code,
-                hasContactInfo: false
             }
         }
     }
@@ -45,28 +42,24 @@ export default class CodeInput extends React.Component<IProps, IStates> {
     }
 
     update_code(event) {
-        this.setState({"code": event.target.value})
+        this.setState({ContactInformation: [{type: "", value: ""}], owner: "", "code": event.target.value})
     }
 
     async fetch_contact_info_from_code() {
         let response = await axios.get(`http://localhost:3001/item/code/` + this.state.code)
-        console.log(response)
-
-        this.state.ContactInformation = response.data
-        this.setState({hasContactInfo:  this.state.ContactInformation.length > 0})
+        this.setState({code: this.state.code, owner: response.data.user, ContactInformation: response.data.contact_info})
     }
 
     render() {
         return (
             <>
-                <div>
-                    <input value={this.state.code} onChange={(e) => this.update_code(e)} type={"text"}
+                <div className={"code_input"}>
+                    <h1>Ange Prylkod</h1>
+                    <p>Här kan du ange prylkod för att hitta kontakt information till ägaren av prylen du har hittat.</p>
+                    <input className={"input"} value={this.state.code} onChange={(e) => this.update_code(e)} type={"text"}
                            placeholder={"Ange Sak Kod För Att Hitta Ägare"}/>
-                    <button onClick={async () => {
-                        await this.fetch_contact_info_from_code()
-                    }}>Hitta Ägare
-                    </button>
-                    {this.state.hasContactInfo && (
+                    <button className={"button"} onClick={async () => {await this.fetch_contact_info_from_code()}}>Hitta Ägare</button>
+                    {this.state.owner != "" && (
                         <OwnerContactInfo owner={this.state.owner} ContactInformation={this.state.ContactInformation}/>
                     )}
                 </div>

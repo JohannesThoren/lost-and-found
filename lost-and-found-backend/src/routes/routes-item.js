@@ -11,6 +11,7 @@ module.exports = (app) => {
 
     app.get('/item/code/:code', async (req, res) => {
         let item_uuid = await db.get_item_uuid_by_code(req.params.code)
+        let username = await db.g
         res.send(await db.get_user_contact_info_by_item_uuid(item_uuid))
     })
 

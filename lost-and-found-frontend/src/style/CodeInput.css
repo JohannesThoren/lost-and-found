@@ -1,0 +1,9 @@
+.code_input {
+    display: flex;
+    width: min(50vw, 30rem);
+    margin-inline: auto;
+    margin-top: 10vh;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    row-gap: .5em;
+}

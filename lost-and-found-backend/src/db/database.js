@@ -13,8 +13,7 @@ exports.auth = async function auth(username_encoded, password_encoded) {
     try {
         username = base64.decode(username_encoded)
         password = base64.decode(password_encoded)
-    }
-    catch (e) {
+    } catch (e) {
         return e
     }
 
@@ -22,7 +21,7 @@ exports.auth = async function auth(username_encoded, password_encoded) {
     let get_user_text = "SELECT * FROM users WHERE username = $1"
     let get_user_response = await client.query(get_user_text, [username])
 
-    if(get_user_response.rows.length != 0) {
+    if (get_user_response.rows.length != 0) {
         let check_pw = base64.decode(get_user_response.rows[0].password)
 
         if (password == check_pw) {
@@ -88,25 +87,32 @@ exports.get_user_data_by_token = async function get_user_data_by_token(token) {
 async function get_user_uuid_buy_item_uuid(uuid) {
     let get_user_id_text = "SELECT * FROM item_user_connections WHERE item_uuid = $1"
     let connections_response = await client.query(get_user_id_text, [uuid])
-    if(connections_response.rows.length > 0) {
+    if (connections_response.rows.length > 0) {
         return await connections_response.rows[0].user_uuid
-    }
-    else return false
+    } else return false
 }
 
 async function get_user_contact_info_by_user_uuid(uuid) {
     let text = "SELECT * FROM contact_information WHERE uuid = $1"
     let response = await client.query(text, [uuid])
-    if(response.rows.length > 0) {
+    if (response.rows.length > 0) {
         return response.rows
-    }
-    else return false
+    } else return false
+}
+
+async function get_user_data_by_user_uuid(uuid) {
+    let text = "SELECT * FROM users WHERE uuid = $1"
+    let response = await client.query(text, [uuid])
+    if (response.rows.length > 0) {
+        return response.rows[0]
+    } else return false
 }
 
 exports.get_user_contact_info_by_item_uuid = async function get_user_contact_info_by_item_uuid(uuid) {
     let user_uuid = await get_user_uuid_buy_item_uuid(uuid)
-    let user_contact_info = get_user_contact_info_by_user_uuid(user_uuid)
-    return user_contact_info
+    let user_contact_info = await get_user_contact_info_by_user_uuid(user_uuid)
+    let user = await get_user_data_by_user_uuid(user_uuid)
+    return {user: user.username, contact_info: user_contact_info}
 }
 
 async function add_item_to_database(item_name, item_description, item_uuid) {
@@ -131,10 +137,9 @@ exports.get_item_uuid_by_code = async function get_item_uuid_by_code(code) {
     let text = "SELECT * FROM item_code_connections WHERE code = $1"
     let response = await client.query(text, [code])
 
-    if(response.rows.length > 0) {
+    if (response.rows.length > 0) {
         return response.rows[0].item_uuid
-    }
-    else return false
+    } else return false
 }
 
 exports.create_new_item = async function create_new_item(item_name, item_description, user) {
@@ -152,10 +157,9 @@ async function get_existing_contact_information(uuid) {
 
 exports.add_contact_information = async function add_contact_information(type, value, uuid) {
     let existing_contact_information = await get_existing_contact_information(uuid)
-    if(existing_contact_information.length >= 3) {
+    if (existing_contact_information.length >= 3) {
         return false
-    }
-    else {
+    } else {
         let text = "INSERT INTO contact_information(type, value, uuid, id) VALUES($1, $2, $3, $4)"
         let values = [type, value, uuid, existing_contact_information.length + 1]
         await client.query(text, values)

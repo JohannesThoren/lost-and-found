@@ -6,7 +6,7 @@ import CodeInput from "./CodeInput";
 
 interface IProps {
     owner: string,
-    ContactInformation: [{type: string, value: string, id: number}],
+    ContactInformation: [{ type: string, value: string, id: number }]
 }
 
 interface IStates {
@@ -21,20 +21,26 @@ export default class OwnerContactInfo extends React.Component<IProps, IStates> {
     }
 
 
-
     render() {
         return (
             <>
-                <h2>{this.props.owner}'s Kontakt Information</h2>
-                {this.props.ContactInformation.map((v, i) => {
-                    return (
-                        <div className={"item"}>
-                            <h1>{v.id}</h1>
-                            <p>{v.type}</p>
-                            <p>{v.value}</p>
-                        </div>
-                    )
-                }) }
+                <div className={"contact-info"}>
+                    <h2>{this.props.owner}'s Kontakt Information</h2>
+                    <p>Använd nedanstående kontaktinformation för att kontakta ägaren och berätta att du har hittat hens
+                        pryl.
+                        Ett mail kommer att skickas till hen med den gps position du hade när du skannade qr-koden</p>
+                    <div className={"items"}>
+                        {this.props.ContactInformation.map((v, i) => {
+                            return (
+                                <div key={i} className={"item"}>
+                                    <p className={"type"}>{v.type}</p>
+                                    <p>{v.value}</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+
             </>
         );
     }
