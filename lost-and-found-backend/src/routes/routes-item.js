@@ -13,6 +13,10 @@ module.exports = (app) => {
         res.send("item added")
     });
 
+    app.get('/item/my/:token', async (req, res) => {
+
+    })
+
     app.get('/item/code/:code', async (req, res) => {
         let code = req.params.code
         res.send(await db.contact_info.get_contact_and_item_information_by_item_code(db.client, code))
