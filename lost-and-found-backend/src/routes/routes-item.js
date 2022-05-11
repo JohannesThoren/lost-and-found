@@ -11,8 +11,12 @@ module.exports = (app) => {
         await db.item.add_item_to_database(client, item_description, item_name, user)
 
         res.send("item added")
-    });
+    })
 
+    app.put("/item/update/:token", async (req, res) => {
+        let user = await db.user.get_user_with_token(db.client, req.params.token)
+        res.send(await db.item.update_item(db.client, req.body.name, req.body.description, req.body.item_uuid, user.uuid))
+    })
 
     app.get('/item/code/:code', async (req, res) => {
         let code = req.params.code

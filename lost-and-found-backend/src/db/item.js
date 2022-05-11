@@ -2,6 +2,19 @@ const uuid = require('uuid');
 const ShortUniqueId = require("short-unique-id");
 const uid = new ShortUniqueId()
 
+const is_user_and_item_connected = async (client, item_uuid, user_uuid) => {
+    let text = "SELECT * FROM item_user_connections WHERE item_uuid = $1 AND user_uuid = $2"
+    let response = await client.query(text, [item_uuid, user_uuid])
+    return (response.rows.length > 0)
+}
+
+exports.update_item = async (client, name, description, item_uuid, user_uuid) => {
+    if (await is_user_and_item_connected(client, item_uuid, user_uuid)) {
+        let text = "UPDATE items SET name = $1, description = $2 WHERE uuid = $3"
+        let response = await client.query(text, [name, description, item_uuid])
+        return response
+    } else return false
+}
 
 exports.get_item_uuid_with_item_code = async (client, code) => {
     let text = "SELECT * FROM item_code_connections WHERE code = $1"
@@ -33,7 +46,7 @@ async function connect_code_and_item(client, item_uuid) {
 
 
 exports.add_item_to_database = async (client, item_description, item_name, user) => {
-    let item_uuid =  uuid.v4()
+    let item_uuid = uuid.v4()
     let add_item_text = "INSERT INTO items(uuid, description, name) VALUES ($1, $2, $3)"
 
     await connect_user_and_item(client, item_uuid, user)

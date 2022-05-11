@@ -58,6 +58,7 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
                     <p>Detta är din profil sida, här kan du hitta bland annat dina prylar men också den kontakt
                         information du har angivit. Om du har några funderingar kontakta oss gärna.</p>
                     <ItemsView items={this.state.items}/>
+
                 </div>
             </>
         )
