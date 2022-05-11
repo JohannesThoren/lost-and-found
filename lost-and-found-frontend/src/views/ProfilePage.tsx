@@ -15,7 +15,8 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
         super(props);
         this.state = {
             token: getCookie("token"),
-            userData: {username: "", email: "", password: "", uuid: "", token: ""}
+            userData: {username: "", email: "", password: "", uuid: "", token: ""},
+            items: [{name: "", description: "", uuid: ""}]
         }
     }
 
@@ -24,12 +25,17 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
         console.log(response)
 
         if(response.data != undefined || response.data != {}) {
-            this.setState({token: response.data.token, userData: response.data})
+            return response.data
         }
     }
 
     async getUserItems() {
+        let response = await axios.get(`http://localhost:3001/user/me/items/${this.state.token}`)
+        console.log(response)
 
+        if (response.data != undefined || response.data != {}) {
+            return response.data
+        }
     }
 
     async getUserContactInfo() {
@@ -37,7 +43,10 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
     }
 
     async componentDidMount() {
-        await this.getUserData()
+        let user_data = await this.getUserData()
+        let items = await this.getUserItems()
+
+        this.setState({userData: user_data, items: items, token: this.state.token})
     }
 
     render() {

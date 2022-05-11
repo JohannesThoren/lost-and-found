@@ -25,7 +25,7 @@ export default class App extends React.Component<IProps, IState> {
     }
 
     signIn() {
-        this.setState({isSignedIn: true})
+        this.setState({isSignedIn: true});
     }
 
     async componentDidMount() {
@@ -35,6 +35,7 @@ export default class App extends React.Component<IProps, IState> {
             this.signIn()
         }
     }
+
 
     render() {
         return (

@@ -13,9 +13,6 @@ module.exports = (app) => {
         res.send("item added")
     });
 
-    app.get('/item/my/:token', async (req, res) => {
-
-    })
 
     app.get('/item/code/:code', async (req, res) => {
         let code = req.params.code

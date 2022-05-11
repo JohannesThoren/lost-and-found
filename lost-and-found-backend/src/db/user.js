@@ -1,5 +1,33 @@
 const base64 = require("base-64");
 const uuid = require("uuid");
+const Item = require("./item");
+const get_user_item_connections_with_user_token = async (client, user_token) => {
+    let user_data = await get_user_with_token(client, user_token);
+    let uuid = user_data.uuid;
+    let text = "SELECT * FROM item_user_connections WHERE user_uuid = $1";
+    let response = await client.query(text, [uuid]);
+    if (response.rows.length > 0) {
+        return response.rows;
+    } else return false
+}
+
+exports.get_user_item_connections_with_user_token = get_user_item_connections_with_user_token
+
+exports.get_items_with_token = async (client, user_token) => {
+    let item_connections = await get_user_item_connections_with_user_token(client, user_token);
+    if (item_connections.length > 0) {
+        let items = [];
+        for (let index in item_connections) {
+            let connection = item_connections[index];
+            let item = await Item.get_item_data_with_item_uuid(client, connection.item_uuid);
+            if (item) {
+                items.push(item);
+            }
+        }
+        return items;
+    } else return false;
+}
+
 exports.get_user_uuid_with_item_uuid = async (client, item_uuid) => {
     let text = "SELECT * FROM item_user_connections WHERE item_uuid = $1"
     let response = await client.query(text, [item_uuid])
@@ -8,14 +36,15 @@ exports.get_user_uuid_with_item_uuid = async (client, item_uuid) => {
     } else return false
 }
 
-exports.get_user_with_token = async (client, token) => {
+const get_user_with_token = async (client, user_token) => {
     let text = "SELECT * FROM users WHERE token = $1"
-    let response = await client.query(text, [token])
+    let response = await client.query(text, [user_token])
     if (response.rows.length > 0) {
         return await response.rows[0]
     } else return false
-
 }
+exports.get_user_with_token = get_user_with_token;
+
 exports.get_user_contact_info_with_user_uuid = async (client, user_uuid) => {
     let text = "SELECT * FROM contact_information WHERE uuid = $1"
     let response = await client.query(text, [user_uuid])
