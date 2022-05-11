@@ -11,7 +11,9 @@ export default function Nav(props: { isSignedIn: boolean }) {
             </div>
             <div className={"field"}>
                 {props.isSignedIn ? (
-                    <Link to={"/me"}>Profil</Link>
+                    <>
+                        <Link to={"/me"}>Profil</Link>
+                    </>
                 ) : (
                     <>
                         <Link to={"/signin"}>Logga In</Link>

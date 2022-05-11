@@ -22,7 +22,10 @@ export default class App extends React.Component<IProps, IState> {
         this.state = {
             isSignedIn: false
         }
+        this.signIn = this.signIn.bind(this)
     }
+
+
 
     signIn() {
         this.setState({isSignedIn: true});
@@ -31,7 +34,7 @@ export default class App extends React.Component<IProps, IState> {
     async componentDidMount() {
         let token = getCookie("token")
         let response = await axios.get(`http://localhost:3001/user/me/${token}`)
-        if(response.data != {} || response.data != false || response.data != undefined) {
+        if(response.data != false) {
             this.signIn()
         }
     }

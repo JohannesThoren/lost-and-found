@@ -12,12 +12,9 @@ export default function SignInAndRedirect(props: {signIn:() => void }) {
     const signin = async () => {
         axios.post("http://localhost:3001/user/auth", {username: base64.encode(username), password: base64.encode(password)}).then((res) => {
             document.cookie = `token=${res.data}`
-            console.log(res)
+            props.signIn()
+            navigate("/me")
         })
-
-        props.signIn()
-
-        navigate("/me")
     }
 
     return (

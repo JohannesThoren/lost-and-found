@@ -1,13 +1,14 @@
 import React from "react";
 import getCookie from '../getCookie.js'
 import axios from "axios";
+import ItemsView from "../components/ItemsView";
 
 interface IProps {
 }
 
 interface IStates {
     token: string
-    userData: {username: string, email: string, password: string, uuid: string, token: string}
+    userData: { username: string, email: string, password: string, uuid: string, token: string }
 }
 
 export default class ProfilePage extends React.Component<IProps, IStates> {
@@ -24,7 +25,7 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
         let response = await axios.get(`http://localhost:3001/user/me/${this.state.token}`)
         console.log(response)
 
-        if(response.data != undefined || response.data != {}) {
+        if (response.data != undefined || response.data != {}) {
             return response.data
         }
     }
@@ -53,7 +54,10 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
         return (
             <>
                 <div className={"profile-info"}>
-                    <h1>Hello {this.state.userData.username}!</h1>
+                    <h1>Hej {this.state.userData.username}!</h1>
+                    <p>Detta är din profil sida, här kan du hitta bland annat dina prylar men också den kontakt
+                        information du har angivit. Om du har några funderingar kontakta oss gärna.</p>
+                    <ItemsView items={this.state.items}/>
                 </div>
             </>
         )
