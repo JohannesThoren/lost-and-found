@@ -1,6 +1,16 @@
+
+
 const base64 = require("base-64");
 const uuid = require("uuid");
 const Item = require("./item");
+const {query} = require("express");
+
+exports.get_contact_with_token = async (client, token) => {
+    let user = await get_user_with_token(client, token)
+    let contact_info = await get_user_contact_info_with_user_uuid(client, user.uuid)
+    return contact_info
+}
+
 const get_user_item_connections_with_user_token = async (client, user_token) => {
     let user_data = await get_user_with_token(client, user_token);
     let uuid = user_data.uuid;
@@ -20,8 +30,9 @@ exports.get_items_with_token = async (client, user_token) => {
         for (let index in item_connections) {
             let connection = item_connections[index];
             let item = await Item.get_item_data_with_item_uuid(client, connection.item_uuid);
+            let item_code = await client.query("SELECT * FROM item_code_connections WHERE item_uuid = $1", [item.uuid]);
             if (item) {
-                items.push(item);
+                items.push({name: item.name, description: item.description, uuid: item.uuid, code: item_code.rows[0].code});
             }
         }
         return items;
@@ -44,8 +55,7 @@ const get_user_with_token = async (client, user_token) => {
     } else return false
 }
 exports.get_user_with_token = get_user_with_token;
-
-exports.get_user_contact_info_with_user_uuid = async (client, user_uuid) => {
+const get_user_contact_info_with_user_uuid = async (client, user_uuid) => {
     let text = "SELECT * FROM contact_information WHERE uuid = $1"
     let response = await client.query(text, [user_uuid])
 
@@ -53,6 +63,7 @@ exports.get_user_contact_info_with_user_uuid = async (client, user_uuid) => {
         return response.rows
     } else return false
 }
+exports.get_user_contact_info_with_user_uuid = get_user_contact_info_with_user_uuid;
 
 exports.auth = async function auth(client, username_encoded, password_encoded) {
     let username = ""

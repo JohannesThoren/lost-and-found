@@ -2,13 +2,16 @@ import React from "react";
 import getCookie from '../getCookie.js'
 import axios from "axios";
 import ItemsView from "../components/ItemsView";
+import ContactInformation from "../components/ContactInformation";
 
 interface IProps {
 }
 
 interface IStates {
     token: string
-    userData: { username: string, email: string, password: string, uuid: string, token: string }
+    userData: { username: string, email: string, password: string, uuid: string, token: string },
+    contactInformation: [{ type: string, value: string, id: number }]
+
 }
 
 export default class ProfilePage extends React.Component<IProps, IStates> {
@@ -17,7 +20,8 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
         this.state = {
             token: getCookie("token"),
             userData: {username: "", email: "", password: "", uuid: "", token: ""},
-            items: [{name: "", description: "", uuid: ""}]
+            items: [{name: "", description: "", uuid: "", code: ""}],
+            contactInformation: []
         }
     }
 
@@ -40,25 +44,39 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
     }
 
     async getUserContactInfo() {
+        let response = await axios.get(`http://localhost:3001/user/me/contact/${getCookie("token")}`)
+        console.log(response)
 
+        if (response.data != undefined || response.data != {}) {
+            return response.data
+        }
     }
 
     async componentDidMount() {
         let user_data = await this.getUserData()
         let items = await this.getUserItems()
-
-        this.setState({userData: user_data, items: items, token: this.state.token})
+        let contact_info = await this.getUserContactInfo()
+        this.setState({
+            contactInformation: contact_info,
+            userData: user_data,
+            items: items,
+            token: this.state.token
+        })
     }
 
     render() {
         return (
             <>
                 <div className={"profile-info"}>
-                    <h1>Hej {this.state.userData.username}!</h1>
-                    <p>Detta är din profil sida, här kan du hitta bland annat dina prylar men också den kontakt
-                        information du har angivit. Om du har några funderingar kontakta oss gärna.</p>
-                    <ItemsView items={this.state.items}/>
-
+                    <div>
+                        <h1>Hej {this.state.userData.username}!</h1>
+                        <p>Detta är din profil sida, här kan du hitta bland annat dina prylar men också den kontakt
+                            information du har angivit. Om du har några funderingar kontakta oss gärna.</p>
+                    </div>
+                    <div>
+                        <ItemsView items={this.state.items}/>
+                        <ContactInformation contactinfo={this.state.contactInformation}/>
+                    </div>
                 </div>
             </>
         )

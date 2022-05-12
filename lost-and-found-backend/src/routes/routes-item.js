@@ -13,6 +13,14 @@ module.exports = (app) => {
         res.send("item added")
     })
 
+    app.delete("/item/delete/:item_id/:token", async (req, res) => {
+        let user = await db.user.get_user_with_token(db.client, req.params.token)
+        await db.item.delete_item_from_database(client, req.params.item_id, user, req.params.token)
+        await db.item.delete_item_from_item_user_connections(client, req.params.item_id, user)
+        await db.item.delete_item_code_from_item_code_connections(client, req.params.item_id)
+        res.send("item deleted")
+    })
+
     app.put("/item/update/:token", async (req, res) => {
         let user = await db.user.get_user_with_token(db.client, req.params.token)
         res.send(await db.item.update_item(db.client, req.body.name, req.body.description, req.body.item_uuid, user.uuid))

@@ -13,6 +13,7 @@ export default function NewItem() {
             item_description: itemDescription
         })
         console.log(response)
+        window.location.reload()
     }
 
     return (
