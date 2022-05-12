@@ -1,4 +1,5 @@
 import React from "react";
+// @ts-ignore
 import getCookie from '../getCookie.js'
 import axios from "axios";
 import ItemsView from "../components/ItemsView";
@@ -10,7 +11,8 @@ interface IProps {
 interface IStates {
     token: string
     userData: { username: string, email: string, password: string, uuid: string, token: string },
-    contactInformation: [{ type: string, value: string, id: number }]
+    items: {name: "", description: "", uuid: "", code: ""}[]
+    contactInformation: { type: string, value: string, id: number }[]
 
 }
 
@@ -20,8 +22,8 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
         this.state = {
             token: getCookie("token"),
             userData: {username: "", email: "", password: "", uuid: "", token: ""},
-            items: [{name: "", description: "", uuid: "", code: ""}],
-            contactInformation: []
+            items: [],
+            contactInformation:[]
         }
     }
 
@@ -74,6 +76,7 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
                             information du har angivit. Om du har några funderingar kontakta oss gärna.</p>
                     </div>
                     <div>
+
                         <ItemsView items={this.state.items}/>
                         <ContactInformation contactinfo={this.state.contactInformation}/>
                     </div>

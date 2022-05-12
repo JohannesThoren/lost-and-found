@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./views/Home";
 import SignIn from "./views/SignIn";
 import ProfilePage from "./views/ProfilePage";
+// @ts-ignore
 import getCookie from "./getCookie";
 import axios from "axios";
 

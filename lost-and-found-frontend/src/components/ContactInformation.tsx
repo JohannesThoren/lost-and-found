@@ -1,6 +1,6 @@
 import Contact from "./Contact";
 
-export default function ContactInformation(props: { contactinfo: [{ type: string, value: string, id: number }] }) {
+export default function ContactInformation(props: { contactinfo: { type: string, value: string, id: number }[] }) {
 
 
     return (
