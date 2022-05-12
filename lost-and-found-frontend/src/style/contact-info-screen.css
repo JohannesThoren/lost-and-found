@@ -1,0 +1,8 @@
+.contact-info-screen {
+    width: max(30vw, 25rem);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    margin-inline: auto;
+    margin-top: 10vh;
+}

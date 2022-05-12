@@ -2,7 +2,7 @@ import {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router";
 // @ts-ignore
-import getCookie from "../getCookie";
+import get_cookie from "../get_cookie";
 import QRCode from "react-qr-code";
 import {
     Box,
@@ -32,12 +32,12 @@ export default function Item(props: {
             name: itemName,
             item_uuid: props.item.uuid
         }
-        let response = await axios.put(`http://localhost:3001/item/update/${getCookie('token')}`, data)
+        let response = await axios.put(`http://localhost:3001/item/update/${get_cookie('token')}`, data)
         window.location.reload()
     }
 
     const deleteItem = async () => {
-        await axios.delete(`http://localhost:3001/item/delete/${props.item.uuid}/${getCookie('token')}`)
+        await axios.delete(`http://localhost:3001/item/delete/${props.item.uuid}/${get_cookie('token')}`)
         window.location.reload()
     }
 

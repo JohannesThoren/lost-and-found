@@ -1,0 +1,9 @@
+.sign-in {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    width: max(30vw, 25rem);
+    padding: 1rem;
+    margin-inline: auto;
+    margin-top: 10vh;
+}

@@ -1,6 +1,6 @@
 import React from "react";
 // @ts-ignore
-import getCookie from '../getCookie.js'
+import get_cookie from '../get_cookie.js'
 import axios from "axios";
 import ItemsView from "../components/ItemsView";
 import ContactInformation from "../components/ContactInformation";
@@ -20,7 +20,7 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-            token: getCookie("token"),
+            token: get_cookie("token"),
             userData: {username: "", email: "", password: "", uuid: "", token: ""},
             items: [],
             contactInformation:[]
@@ -46,7 +46,7 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
     }
 
     async getUserContactInfo() {
-        let response = await axios.get(`http://localhost:3001/user/me/contact/${getCookie("token")}`)
+        let response = await axios.get(`http://localhost:3001/user/me/contact/${get_cookie("token")}`)
         console.log(response)
 
         if (response.data != undefined || response.data != {}) {

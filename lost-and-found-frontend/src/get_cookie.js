@@ -1,4 +1,4 @@
-export default function getCookie(cName) {
+export default function get_cookie(cName) {
     const name = cName + "=";
     const cDecoded = decodeURIComponent(document.cookie); //to be careful
     const cArr = cDecoded.split('; ');
@@ -8,3 +8,4 @@ export default function getCookie(cName) {
     })
     return res
 }
+

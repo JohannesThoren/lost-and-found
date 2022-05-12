@@ -1,26 +1,39 @@
-import {Link} from "react-router-dom";
+import {AppBar, Box, Button, ButtonGroup, IconButton, Link, Toolbar, Typography} from "@mui/material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-export default function Nav(props: { isSignedIn: boolean }) {
-
+export default function Nav(props: { isSignedIn: boolean, setSignedOut: () => void }) {
 
     return (
-        <div className={"nav"}>
-            <div className={"field"}>
-                <Link to={"/contact"}>Kontakta Oss</Link>
-                <Link to={"/about"}>Om oss</Link>
-            </div>
-            <div className={"field"}>
-                {props.isSignedIn ? (
-                    <>
-                        <Link to={"/me"}>Profil</Link>
-                    </>
-                ) : (
-                    <>
-                        <Link to={"/signin"}>Logga In</Link>
-                        <Link to={"/signup"}>Skapa Konto</Link>
-                    </>
-                )}
-            </div>
-        </div>
+        <Box sx={{flexGrow: 1}}>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        Lost n' Found
+                    </Typography>
+                    <Box columnGap={"1rem"} display={"flex"} sx={{alignItems: "center"}}>
+                        <Link variant={"button"} underline={"hover"} color={"white"} href={"/"}>Hem</Link>
+                        <Link variant={"button"} underline={"hover"} color={"white"} href={"/about"}>Om Oss</Link>
+                        <Link variant={"button"} underline={"hover"} color={"white"} href={"/contact"}>Kontakta oss</Link>
+
+                        {props.isSignedIn ? (
+                            <>
+                                <Link  sx={{display: "flex", columnGap: ".4rem"}} variant={"button"} underline={"none"}
+                                      color={"white"} href={"/me"}> <AccountCircleIcon /> Profil </Link>
+                                <Button onClick={() => props.setSignedOut()} variant={"text"} sx={{color: "white"}}>Logga
+                                    Ut</Button>
+                            </>
+                        ) : (
+                            <>
+                                <Link variant={"button"} underline={"hover"} color={"white"} href={"/signin"}>Logga
+                                    In</Link>
+                                <Link variant={"button"} underline={"hover"} color={"white"} href={"/signin"}>Skapa
+                                    Konto</Link>
+                            </>
+                        )}
+                    </Box>
+
+                </Toolbar>
+            </AppBar>
+        </Box>
     )
 }

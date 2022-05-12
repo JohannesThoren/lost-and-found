@@ -1,0 +1,16 @@
+.code-input {
+    width: max(30vw, 25rem);
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+
+    margin-inline: auto;
+
+    margin-top: 10vh;
+    row-gap: 1rem;
+}

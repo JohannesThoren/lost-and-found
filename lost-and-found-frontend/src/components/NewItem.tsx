@@ -2,7 +2,7 @@ import Item from "./Item";
 import {useState} from "react";
 import axios from "axios";
 // @ts-ignore
-import getCookie from "../getCookie";
+import get_cookie from "../get_cookie";
 import {Button, TextField} from "@mui/material";
 
 export default function NewItem() {
@@ -10,7 +10,7 @@ export default function NewItem() {
     const [itemDescription, setItemDescription] = useState("")
 
     const newItem = async () => {
-        let response = await axios.post(`http://localhost:3001/item/new/${getCookie('token')}`, {
+        let response = await axios.post(`http://localhost:3001/item/new/${get_cookie('token')}`, {
             item_name: itemName,
             item_description: itemDescription
         })
