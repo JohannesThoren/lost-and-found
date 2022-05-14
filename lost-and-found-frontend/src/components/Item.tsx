@@ -8,7 +8,7 @@ import {
     Box,
     Button,
     ButtonGroup,
-    Card,
+    Card, CardActions,
     CardContent,
     CardHeader,
     CardMedia,
@@ -42,58 +42,75 @@ export default function Item(props: {
     }
 
     return (
-        <Card sx={{display: 'flex'}}>
-            <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                <CardContent sx={{flex: '1 0 auto'}}>
-                    {isEditMode ? (
-                            <>
-                                <Box>
-                                    <TextField value={itemName} variant={"standard"} label={"Namn"} onClick={(e) => {
-                                        setItemName(e.target.value)
-                                    }}/>
-                                </Box>
-                                <Box>
-                                    <TextField value={itemDescription} variant={"standard"} label={"Beskrivning"}
-                                               onClick={(e) => {
-                                                   setItemDescription(e.target.value)
-                                               }}/>
-                                </Box>
-                            </>
-                        ) :
-                        (
-                            <>
-                                <Typography component="div" variant="h5">
-                                    {itemName}
-                                </Typography>
-                                <Typography variant="subtitle1" color="text.secondary" component="div">
-                                    {itemDescription}
-                                </Typography>
-                                <Typography variant="subtitle1" color="text.secondary" component="div">
-                                    Pryl Kod: {props.item.code}
-                                </Typography>
-                            </>
+        <Card variant={"outlined"} sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: 'max(30vw,25rem)',
+            padding: '1rem'
+        }}>
+            <Box>
+                {isEditMode ?
+                    <>
+                        <CardHeader
+                            title={"Redigera Prylinformation"}
+                            subheader={"Nu kan du redigera prylinformationen. alltså prylens namn och beskrivning"}
+                        />
 
-                        )}
-                </CardContent>
-                <Box sx={{display: 'flex', alignItems: 'center', pl: 1, pb: 1}}>
-                    {isEditMode ? (
-                        <Button variant="contained" onClick={async () => await save()}>Spara</Button>
-                    ) : (
+                        <CardContent>
 
-                        <ButtonGroup>
-                            <Button variant="contained" onClick={() => setEditMode(true)} aria-label="previous">
-                                Redigera
-                            </Button>
-                            <Button variant="outlined" onClick={async () => {
-                                await deleteItem()
-                            }} aria-label="play/pause">
-                                Ta Bort
-                            </Button>
-                        </ButtonGroup>
-                    )}
-                </Box>
+                            <TextField
+                                label={"Name"}
+                                value={itemName}
+                                variant={"standard"}
+                                onChange={(e) => setItemName(e.target.value)}
+                            />
+
+                            <TextField
+                                label={"Description"}
+                                value={itemDescription}
+                                variant={'standard'}
+                                onChange={(e) => setItemDescription(e.target.value)}
+                            />
+
+                        </CardContent>
+
+                        <CardActions>
+                            <ButtonGroup>
+                                <Button onClick={save}>Save</Button>
+                                <Button onClick={() => setEditMode(false)}>Cancel</Button>
+                            </ButtonGroup>
+                        </CardActions>
+                    </>
+                    :
+                    <>
+                        <CardHeader
+                            title={props.item.name}
+                            subheader={props.item.description}
+                        />
+
+                        <CardContent>
+                            <Typography variant={"body2"}>
+                                Prylkod: {props.item.code}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <ButtonGroup>
+                                <Button variant={"contained"} onClick={() => setEditMode(true)}>Redigera</Button>
+                                <Button color={"warning"} onClick={deleteItem}>Ta Bort</Button>
+                            </ButtonGroup>
+                        </CardActions>
+
+                    </>
+                }
+
+
             </Box>
-            <QRCode value={`http://${window.location.hostname}/code/${props.item.code}`} size={100}/>
+
+            <Box sx={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
+                <QRCode value={`http://${window.location.host}/code/${props.item.code}`} size={150}/>
+            </Box>
+
         </Card>
     )
 }

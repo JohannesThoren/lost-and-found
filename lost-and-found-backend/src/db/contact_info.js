@@ -1,4 +1,4 @@
-const {get_user_uuid_with_item_uuid, get_user_contact_info_with_user_uuid, get_user_with_token} = require("./user");
+const {get_user_uuid_with_item_uuid, get_user_with_token} = require("./user");
 const {get_item_uuid_with_item_code, get_item_data_with_item_uuid} = require("./item");
 
 exports.get_contact_and_item_information_by_item_code = async (client, item_code) => {
@@ -22,3 +22,13 @@ exports.add_contact_info = async (client, token, type, value) => {
         return true
     }
 }
+
+const get_user_contact_info_with_user_uuid = async (client, user_uuid) => {
+    let text = "SELECT * FROM contact_information WHERE uuid = $1"
+    let response = await client.query(text, [user_uuid])
+
+    if (response.rows.length > 0) {
+        return response.rows
+    } else return false
+}
+exports.get_user_contact_info_with_user_uuid = get_user_contact_info_with_user_uuid;

@@ -57,7 +57,7 @@ export default class App extends React.Component<IProps, IState> {
                         <Route path={"/"}>
                             <Route index element={<Home setSignOut={this.signOut} isSignedIn={this.state.isSignedIn}/>}/>
                             <Route path={"/signin"} element={<SignIn signIn={this.signIn}/>}></Route>
-                            <Route path={"/me"} element={<ProfilePage/>}></Route>
+                            <Route path={"/me"} element={<ProfilePage isSignedIn={this.state.isSignedIn} signOut={this.signOut}/>}></Route>
                             <Route path={"/code/:code"} element={<GetContactInfo isSignedIn={this.state.isSignedIn} setSignedOut={this.signOut}/>}></Route>
                         </Route>
                     </Routes>

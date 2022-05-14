@@ -4,14 +4,18 @@ import get_cookie from '../get_cookie.js'
 import axios from "axios";
 import ItemsView from "../components/ItemsView";
 import ContactInformation from "../components/ContactInformation";
+import {Box, Grid, Paper, Typography} from "@mui/material";
+import Nav from "../components/Nav";
 
 interface IProps {
+    isSignedIn: boolean;
+    signOut: () => void
 }
 
 interface IStates {
     token: string
     userData: { username: string, email: string, password: string, uuid: string, token: string },
-    items: {name: "", description: "", uuid: "", code: ""}[]
+    items: { name: "", description: "", uuid: "", code: "" }[]
     contactInformation: { type: string, value: string, id: number }[]
 
 }
@@ -23,7 +27,7 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
             token: get_cookie("token"),
             userData: {username: "", email: "", password: "", uuid: "", token: ""},
             items: [],
-            contactInformation:[]
+            contactInformation: []
         }
     }
 
@@ -69,19 +73,26 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
     render() {
         return (
             <>
-                <div className={"profile-info"}>
-                    <div>
-                        <h1>Hej {this.state.userData.username}!</h1>
-                        <p>Detta är din profil sida, här kan du hitta bland annat dina prylar men också den kontakt
-                            information du har angivit. Om du har några funderingar kontakta oss gärna.</p>
-                    </div>
-                    <div>
+                <Nav isSignedIn={this.props.isSignedIn} setSignedOut={this.props.signOut}/>
+                <Grid sx={{padding: "1rem"}} spacing={{xs: 1}} container columns={{xs: 3}}>
+                    <Grid item xs={1} className={"profile-info"}>
+                        <Paper sx={{padding: '.5rem'}} variant={"outlined"}>
+                            <Typography variant={"h4"}>Hej {this.state.userData.username}!</Typography>
+                            <Typography>Detta är din profil sida, här kan du hitta bland annat dina prylar men också den
+                                kontakt
+                                information du har angivit. Om du har några funderingar kontakta oss gärna.</Typography>
+                            <ContactInformation contactinfo={this.state.contactInformation}/>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <Paper sx={{padding: '.5rem'}} className={"items"} variant={"outlined"}>
+                            <ItemsView items={this.state.items}/>
+                        </Paper>
+                    </Grid>
 
-                        <ItemsView items={this.state.items}/>
-                        <ContactInformation contactinfo={this.state.contactInformation}/>
-                    </div>
-                </div>
+                </Grid>
             </>
+
         )
     }
 }

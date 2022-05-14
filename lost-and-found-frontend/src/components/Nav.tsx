@@ -13,14 +13,16 @@ export default function Nav(props: { isSignedIn: boolean, setSignedOut: () => vo
                     <Box columnGap={"1rem"} display={"flex"} sx={{alignItems: "center"}}>
                         <Link variant={"button"} underline={"hover"} color={"white"} href={"/"}>Hem</Link>
                         <Link variant={"button"} underline={"hover"} color={"white"} href={"/about"}>Om Oss</Link>
-                        <Link variant={"button"} underline={"hover"} color={"white"} href={"/contact"}>Kontakta oss</Link>
+                        <Link variant={"button"} underline={"hover"} color={"white"} href={"/contact"}>Kontakta
+                            oss</Link>
 
                         {props.isSignedIn ? (
                             <>
-                                <Link  sx={{display: "flex", columnGap: ".4rem"}} variant={"button"} underline={"none"}
-                                      color={"white"} href={"/me"}> <AccountCircleIcon /> Profil </Link>
-                                <Button onClick={() => props.setSignedOut()} variant={"text"} sx={{color: "white"}}>Logga
-                                    Ut</Button>
+                                <Link sx={{display: "flex", columnGap: ".4rem"}} variant={"button"} underline={"none"}
+                                      color={"white"} href={"/me"}> <AccountCircleIcon/> Profil </Link>
+                                <Link href={"/"} onClick={() => props.setSignedOut()} variant={"button"} underline={"hover"}
+                                      color={"white"}>Logga
+                                    Ut</Link>
                             </>
                         ) : (
                             <>

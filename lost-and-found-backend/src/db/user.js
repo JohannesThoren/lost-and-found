@@ -55,15 +55,7 @@ const get_user_with_token = async (client, user_token) => {
     } else return false
 }
 exports.get_user_with_token = get_user_with_token;
-const get_user_contact_info_with_user_uuid = async (client, user_uuid) => {
-    let text = "SELECT * FROM contact_information WHERE uuid = $1"
-    let response = await client.query(text, [user_uuid])
 
-    if (response.rows.length > 0) {
-        return response.rows
-    } else return false
-}
-exports.get_user_contact_info_with_user_uuid = get_user_contact_info_with_user_uuid;
 
 exports.auth = async function auth(client, username_encoded, password_encoded) {
     let username = ""
