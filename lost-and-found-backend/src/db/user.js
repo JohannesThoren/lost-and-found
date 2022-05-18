@@ -5,11 +5,16 @@ const uuid = require("uuid");
 const Item = require("./item");
 const {query} = require("express");
 
-exports.get_contact_with_token = async (client, token) => {
-    let user = await get_user_with_token(client, token)
-    let contact_info = await get_user_contact_info_with_user_uuid(client, user.uuid)
-    return contact_info
+const get_user_with_token = async (client, user_token) => {
+    let text = "SELECT * FROM users WHERE token = $1"
+    let response = await client.query(text, [user_token])
+    if (response.rows.length > 0) {
+        return await response.rows[0]
+    } else return false
 }
+exports.get_user_with_token = get_user_with_token;
+
+
 
 const get_user_item_connections_with_user_token = async (client, user_token) => {
     let user_data = await get_user_with_token(client, user_token);
@@ -47,14 +52,6 @@ exports.get_user_uuid_with_item_uuid = async (client, item_uuid) => {
     } else return false
 }
 
-const get_user_with_token = async (client, user_token) => {
-    let text = "SELECT * FROM users WHERE token = $1"
-    let response = await client.query(text, [user_token])
-    if (response.rows.length > 0) {
-        return await response.rows[0]
-    } else return false
-}
-exports.get_user_with_token = get_user_with_token;
 
 
 exports.auth = async function auth(client, username_encoded, password_encoded) {

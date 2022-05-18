@@ -17,6 +17,7 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import EmailIcon from '@mui/icons-material/Email';
 import PublicIcon from '@mui/icons-material/Public';
 import Nav from "../components/Nav";
+import {str_api_root} from "../api-calls";
 
 export default function (props: { isSignedIn: boolean, setSignedOut: () => void }) {
     let {code} = useParams();
@@ -33,7 +34,7 @@ export default function (props: { isSignedIn: boolean, setSignedOut: () => void 
     }, [])
 
     const get_contact_info = () => {
-        axios.get(`http://localhost:3001/item/code/${code}`).then((res) => {
+        let res = axios.get(`${str_api_root}/item/code/${code}`).then((res) => {
             setContactInfo(res.data.contact_info)
             setUsername(res.data.contact_info[0].username)
             setItemInfo(res.data.item)

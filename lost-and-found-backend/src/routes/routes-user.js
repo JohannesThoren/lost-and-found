@@ -27,7 +27,7 @@ module.exports = (app) => {
     })
 
     app.get("/user/me/contact/:token", async (req, res) => {
-        res.send(await db.user.get_contact_with_token(db.client, req.params.token))
+        res.send(await db.contact_info.get_contact_with_token(db.client, req.params.token))
     })
 
     app.post("/user/me/add/contact/:token", async (req, res) => {

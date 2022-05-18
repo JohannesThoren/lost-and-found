@@ -2,7 +2,7 @@ const db = require('../db/db')
 
 module.exports = (app) => {
     app.get("/contact/me/:token", async (req, res) => {
-        res.send(await db.user.get_contact_with_token(db.client, req.params.token))
+        res.send(await db.contact_info.get_contact_with_token(db.client, req.params.token))
     })
 
     app.post("/contact/add/:token", async (req, res) => {

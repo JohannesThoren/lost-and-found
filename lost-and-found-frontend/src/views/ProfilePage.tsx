@@ -7,6 +7,8 @@ import ContactInformation from "../components/ContactInformation";
 import {Box, Grid, Paper, Typography} from "@mui/material";
 import Nav from "../components/Nav";
 
+import {api_get} from '../api-calls.js'
+
 interface IProps {
     isSignedIn: boolean;
     signOut: () => void
@@ -32,29 +34,26 @@ export default class ProfilePage extends React.Component<IProps, IStates> {
     }
 
     async getUserData() {
-        let response = await axios.get(`http://localhost:3001/user/me/${this.state.token}`)
-        console.log(response)
+        let response = await api_get(`/user/me/${this.state.token}`)
 
         if (response.data != undefined || response.data != {}) {
-            return response.data
+            return response
         }
     }
 
     async getUserItems() {
-        let response = await axios.get(`http://localhost:3001/user/me/items/${this.state.token}`)
-        console.log(response)
+        let response = await api_get(`/user/me/items/${this.state.token}`)
 
         if (response.data != undefined || response.data != {}) {
-            return response.data
+            return response
         }
     }
 
     async getUserContactInfo() {
-        let response = await axios.get(`http://localhost:3001/user/me/contact/${get_cookie("token")}`)
-        console.log(response)
+        let response = await api_get(`/user/me/contact/${get_cookie("token")}`)
 
         if (response.data != undefined || response.data != {}) {
-            return response.data
+            return response
         }
     }
 
