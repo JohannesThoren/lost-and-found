@@ -15,6 +15,7 @@ import {
     IconButton, TextField,
     Typography
 } from "@mui/material";
+import {api_delete, api_post} from "../api-calls";
 
 export default function Item(props: {
     item: { name: string, description: string, uuid: string, code: string }
@@ -32,12 +33,12 @@ export default function Item(props: {
             name: itemName,
             item_uuid: props.item.uuid
         }
-        let response = await axios.put(`http://localhost:3001/item/update/${get_cookie('token')}`, data)
+        await api_post(`/item/update/${get_cookie('token')}`, data)
         window.location.reload()
     }
 
     const deleteItem = async () => {
-        await axios.delete(`http://localhost:3001/item/delete/${props.item.uuid}/${get_cookie('token')}`)
+        await api_delete(`/item/delete/${props.item.uuid}/${get_cookie('token')}`)
         window.location.reload()
     }
 
@@ -97,7 +98,7 @@ export default function Item(props: {
                         <CardActions>
                             <ButtonGroup>
                                 <Button variant={"contained"} onClick={() => setEditMode(true)}>Redigera</Button>
-                                <Button color={"warning"} onClick={deleteItem}>Ta Bort</Button>
+                                <Button color={"warning"} onClick={async () => await deleteItem()}>Ta Bort</Button>
                             </ButtonGroup>
                         </CardActions>
 

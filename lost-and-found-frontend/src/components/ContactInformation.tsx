@@ -1,8 +1,5 @@
 import Contact from "./Contact";
-import {Avatar, Button, ButtonGroup, List, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import EmailIcon from "@mui/icons-material/Email";
-import PublicIcon from "@mui/icons-material/Public";
+import {List, ListItem, Typography} from "@mui/material";
 import React from "react";
 import AddContactInfo from "./AddContactInfo";
 
@@ -15,32 +12,21 @@ export default function ContactInformation(props: { contactinfo: { type: string,
             <div className="contact-information">
                 <Typography variant={"h4"}>Din Kontakt Information</Typography>
                 <List>
-                    {props.contactinfo.map((ci, index) => {
+                    {props.contactinfo && props.contactinfo.map((ci, index) => {
                         return (
-                            <ListItem key={'ci'+index}>
+                            <ListItem key={'ci' + index}>
+                                <Contact contactinfo={ci}/>
 
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        {ci.type == "phone" && (
-                                            <LocalPhoneIcon/>
-                                        )}
-                                        {ci.type == "email" && (
-                                            <EmailIcon/>
-                                        )}
-                                        {ci.type == "social media" && (
-                                            <PublicIcon/>
-                                        )}
-                                    </Avatar>
-                                </ListItemAvatar>
-
-                                <ListItemText primary={ci.value}/>
-                                <ButtonGroup>
-                                    <Button variant={"contained"}>Redigera</Button>
-                                    <Button color={"warning"}>Ta Bort</Button>
-                                </ButtonGroup>
                             </ListItem>
                         )
                     })}
+                    {!props.contactinfo && (
+                        <>
+                            <Typography color={"red"}>du har inte lagt in någon kontakt information. För att personer ska kunna
+                                kontakta dig om de hittar dina prylar måste du ha lagt in kontakt
+                                informatin. Gör det under "Lägg till kontakt information"</Typography>
+                        </>
+                    )}
                 </List>
             </div>
             <AddContactInfo/>
